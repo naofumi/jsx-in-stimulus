@@ -1,12 +1,26 @@
-import {React} from './jsx-runtime.js'
+import {React} from './jsx-runtime.ts'
+import JsxPage from "./components/pages/jsx_page.jsx"
+import './style.css'
+import {Application} from "@hotwired/stimulus"
 
-function FooComponent() {
-  return <div>Foo</div>
-}
+import SwitcherController from "./controllers/switcher_controller.jsx"
+import RadioController from "./controllers/radio_controller.js"
+import {SwitcherButtons} from "./components/SwitcherButtons.jsx"
 
-const jsx = <><h1 className="foobar" aria-busy="bar">
-    Hello Vite! JSX
-    <div style="font-size: 16px">Bar</div>
-    <FooComponent />
-  </h1></>
-document.querySelector("#jsx").replaceChildren(jsx)
+window.Stimulus = Application.start()
+Stimulus.register("switcher", SwitcherController)
+Stimulus.register("radio", RadioController)
+
+const jsxElement = <>
+  <div data-controller="switcher">
+    <div className="top_controls">
+      <SwitcherButtons/>
+    </div>
+
+    <div data-switcher-target="outlet">
+      <JsxPage/>
+    </div>
+  </div>
+</>
+
+document.querySelector("#jsx-root").replaceChildren(jsxElement)
